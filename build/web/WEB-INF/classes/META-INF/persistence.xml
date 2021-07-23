@@ -5,12 +5,14 @@
     <class>br.com.gestaotarefas.model.Tarefa</class>
     <class>br.com.gestaotarefas.model.Responsavel</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <validation-mode>NONE</validation-mode>
     <properties>
-      <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/postgres"/>
-      <property name="javax.persistence.jdbc.user" value="postgres"/>
+      <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/ww2coopg_gestao_tarefas"/>
+      <property name="javax.persistence.jdbc.user" value="ww2coopguardioes"/>
       <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
-      <property name="javax.persistence.jdbc.password" value="102@Suporte"/>
+      <property name="javax.persistence.jdbc.password" value="aY2*p_lzquER"/>
       <property name="hibernate.cache.provider_class" value="org.hibernate.cache.NoCacheProvider"/>
+      <property name="hibernate.show_sql" value="true"/>
     </properties>
   </persistence-unit>
 </persistence>

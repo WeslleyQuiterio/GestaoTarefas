@@ -22,23 +22,25 @@
                             <hr></hr>
                         </b:row>
                         <b:row>
-                            <b:commandButton tooltip="Adicionar novo responsavel">
+                            <b:commandButton tooltip="Adicionar novo responsavel" action="#{responsavelBean.addOrEdit(null)}">
                                 <b:icon value="plus"/>                           
                             </b:commandButton>  
-                            <b:commandButton tooltip="Atualizar lista de responsáveis" style="margin-left: 6px">
+                            <b:commandButton tooltip="Atualizar lista de responsáveis" action="#{responsavelBean.refresh()}" style="margin-left: 6px">
                                 <b:icon value="refresh"/>                           
                             </b:commandButton>   
                         </b:row>
                         <b:row style="margin-top: 24px">
                             <b:column span="12">
                                 <b:dataTable value="#{responsavelBean.responsaveis}" var="resp" >
-                                    <b:dataTableColumn value="#{resp.idResponsavel}"/>
+                                    <b:dataTableColumn value="#{resp.idResponsavel}" label="Código" width="100px"/>
+                                    <b:dataTableColumn value="#{resp.nome}" label="Nome"/>
                                     <b:dataTableColumn label="Ações" width="120px">
                                         
-                                        <b:commandButton tooltip="editar perfil" action="#">
+                                        <b:commandButton tooltip="editar responsavel" action="#{responsavelBean.addOrEdit(resp)}">
                                             <b:iconAwesome value="fa-edit"/>   
                                         </b:commandButton>
-                                        <b:commandButton tooltip="excluir perfil">
+                                        <b:commandButton tooltip="excluir responsavel" onclick="if (!confirm('Tem certeza que deseja excluir o responsavel: #{resp.nome}'))
+                                                                     return false" action="#{responsavelBean.excluir(resp)}">
                                             <b:iconAwesome value="fa-trash-o"/>   
                                         </b:commandButton>
                                     </b:dataTableColumn>

@@ -34,11 +34,44 @@ public class ResponsavelBean {
         refresh();
     }
 
-    private void refresh() {
+    public void refresh() {
         try {
             responsaveis = service.buscarTodos();
         } catch (BaseException ex) {
             MensagensView.getInstance().exibirErro("Erro ao buscar Responsáveis", "Detalhe: " + ex.getMessage());
+        }
+    }
+
+    public String addOrEdit(Responsavel resp) {
+        if (resp == null) {
+            this.responsavel = new Responsavel();
+        } else {
+            this.responsavel = resp;
+        }
+        return "/app/responsavel/responsavel.xhtml?faces-redirect=true";
+    }
+    
+    public String salvar(){
+        try {
+            service.salvar(this.responsavel);
+            refresh();
+            return "/app/responsavel/responsaveis.xhtml?faces-redirect=true";
+        } catch (BaseException ex) {
+            MensagensView.getInstance().exibirErro("Erro ao salvar responsável", "Detalhe: " + ex.getMessage());
+            ex.printStackTrace();
+        }
+        
+        return "";
+    }
+    
+    public void excluir(Responsavel resp){
+        if (resp != null){
+            try {
+                service.excluir(resp);
+                refresh();
+            } catch (BaseException ex) {
+                MensagensView.getInstance().exibirErro("Erro ao excluir responsavel", "Detalhe: " + ex.getMessage());
+            }
         }
     }
 

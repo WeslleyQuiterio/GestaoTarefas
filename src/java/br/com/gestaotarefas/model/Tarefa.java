@@ -20,15 +20,16 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 /**
  *
  * @author Weslley
  */
 @Entity
-@Table(catalog = "postgres", schema = "gestao_tarefas")
+@Table(schema = "gestao_tarefas")
 @NamedQueries({
-    @NamedQuery(name = "Tarefa.findAll", query = "SELECT t FROM Tarefa t")
+    @NamedQuery(name = "Tarefa.findAll", query = "SELECT t FROM Tarefa t WHERE t.concluido = false")
     , @NamedQuery(name = "Tarefa.findByIdTarefa", query = "SELECT t FROM Tarefa t WHERE t.idTarefa = :idTarefa")
     , @NamedQuery(name = "Tarefa.findByDescricao", query = "SELECT t FROM Tarefa t WHERE t.descricao = :descricao")
     , @NamedQuery(name = "Tarefa.findByPrioridade", query = "SELECT t FROM Tarefa t WHERE t.prioridade = :prioridade")
@@ -45,15 +46,28 @@ public class Tarefa implements Serializable {
     @Column(nullable = false, length = 2147483647)
     private String descricao;
     @Basic(optional = false)
+    @Column(nullable = false, length = 100)
+    private String titulo;
+    @Basic(optional = false)
     @Column(nullable = false)
     private Character prioridade;
+    @Basic(optional = false)
+    @Column(nullable = false)
+    private Boolean concluido;
     @Basic(optional = false)
     @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date deadline;
     @JoinColumn(name = "idResponsavel", referencedColumnName = "idResponsavel", nullable = false)
     @ManyToOne(optional = false)
-    private Responsavel idResponsavel;
+    private Responsavel responsavel;
+    
+    
+    @Transient
+    private String strPrioridade;
+    @Transient
+    private String lookPrioridade;
+    
 
     public Tarefa() {
     }
@@ -62,11 +76,30 @@ public class Tarefa implements Serializable {
         this.idTarefa = idTarefa;
     }
 
-    public Tarefa(Integer idTarefa, String descricao, Character prioridade, Date deadline) {
+    public Tarefa(Integer idTarefa, String descricao, String titulo, Character prioridade, Boolean situacao, Date deadline, Responsavel responsavel) {
         this.idTarefa = idTarefa;
         this.descricao = descricao;
+        this.titulo = titulo;
         this.prioridade = prioridade;
+        this.concluido = situacao;
         this.deadline = deadline;
+        this.responsavel = responsavel;
+    }
+
+    public Boolean getConcluido() {
+        return concluido;
+    }
+
+    public void setConcluido(Boolean concluido) {
+        this.concluido = concluido;
+    }
+
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
     }
 
     public Integer getIdTarefa() {
@@ -101,12 +134,12 @@ public class Tarefa implements Serializable {
         this.deadline = deadline;
     }
 
-    public Responsavel getIdResponsavel() {
-        return idResponsavel;
+    public Responsavel getResponsavel() {
+        return responsavel;
     }
 
-    public void setIdResponsavel(Responsavel idResponsavel) {
-        this.idResponsavel = idResponsavel;
+    public void setResponsavel(Responsavel responsavel) {
+        this.responsavel = responsavel;
     }
 
     @Override
@@ -129,9 +162,37 @@ public class Tarefa implements Serializable {
         return true;
     }
 
+    public String getStrPrioridade() {
+        if (this.prioridade.equals('1')){
+            strPrioridade = "Alta";
+        }else if (this.prioridade.equals('2')){
+            strPrioridade = "Média";
+        }else{
+            strPrioridade = "Baixa";
+        }
+        
+        return strPrioridade;
+    }
+
+    public String getLookPrioridade() {
+        
+        if (this.prioridade.equals('1')){
+            lookPrioridade = "danger";
+        }else if (this.prioridade.equals('2')){
+            lookPrioridade = "warning";
+        }else{
+            lookPrioridade = "info";
+        }
+        
+        
+        return lookPrioridade;
+    }
+    
+    
+
     @Override
     public String toString() {
         return "br.com.gestaotarefas.model.Tarefa[ idTarefa=" + idTarefa + " ]";
     }
-    
+
 }

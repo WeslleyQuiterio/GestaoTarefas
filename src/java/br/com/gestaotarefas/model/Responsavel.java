@@ -24,7 +24,7 @@ import javax.persistence.Table;
  * @author Weslley
  */
 @Entity
-@Table(catalog = "postgres", schema = "gestao_tarefas")
+@Table(schema = "gestao_tarefas")
 @NamedQueries({
     @NamedQuery(name = "Responsavel.findAll", query = "SELECT r FROM Responsavel r")
     , @NamedQuery(name = "Responsavel.findByIdResponsavel", query = "SELECT r FROM Responsavel r WHERE r.idResponsavel = :idResponsavel")
@@ -33,7 +33,7 @@ public class Responsavel implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "idResponsavel", nullable = false)
     private Integer idResponsavel;

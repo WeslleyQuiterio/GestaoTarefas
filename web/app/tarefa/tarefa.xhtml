@@ -4,7 +4,8 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:b="http://bootsfaces.net/ui"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <body>
 
@@ -12,31 +13,39 @@
             
             <ui:define name="content">
                 <b:container fluid="true">
-                    <b:link href="../tarefas.xhtml" value="Início "/>                    
+                    <b:link href="../tarefa/tarefas.xhtml" value="Voltar "/>                    
                     <h:form>
                          <p:growl showDetail="true"  
                              showSummary="true" 
                              life="3000" 
                              sticky="true"/>
                         <b:row>
-                             <h3>Perfil de Acesso <b:label severity="info" value="Novo"/></h3>
+                            <h3>Tarefa <b:label rendered="#{tarefaBean.tarefa.idTarefa == null}" severity="info" value="Nova"/></h3>
                              <hr></hr>
                         </b:row>
                         <b:row>
                             <b:column span="12">
-                                <b:inputText label="Descrição"/>
+                                <b:inputText span="8" label="Titulo" value="#{tarefaBean.tarefa.titulo}"/>
+                                <b:inputTextarea span="12" label="Titulo" value="#{tarefaBean.tarefa.descricao}"/>
+                                <b:selectOneMenu span="4" label="Responsável" value="#{tarefaBean.tarefa.responsavel}">
+                                    <f:selectItems value="#{tarefaBean.responsaveis}" var="resp" itemLabel="#{resp.nome}" itemValue="#{resp}"/>
+                                </b:selectOneMenu>
+                                <b:selectOneMenu span="4" label="Prioridade" value="#{tarefaBean.tarefa.prioridade}" >
+                                    <f:selectItem itemLabel="Alta" itemValue="1" />
+                                    <f:selectItem itemLabel="Média" itemValue="2" />
+                                    <f:selectItem itemLabel="Baixa" itemValue="3" />
+                                </b:selectOneMenu>
+                                
+                                <b:dateTimePicker label="Deadline" span="4" value="#{tarefaBean.tarefa.deadline}" />
                             </b:column>                  
                         </b:row>
                         <b:row>
                             <b:column span="12">
-                                <b:commandButton span="2" look="success" value="Salvar" style="margin-top: 24px">
+                                <b:commandButton span="2" look="success" action="#{tarefaBean.salvar()}" value="Salvar" style="margin-top: 24px">
                                      
                                      <b:iconAwesome value="fa-save"/>
-                                </b:commandButton>
-                                
-                                <b:commandButton span="2" look="danger" value="Cancelar" style="margin-top: 24px">
-                                     <b:iconAwesome  value="fa-undo"/>
-                                </b:commandButton>
+                                </b:commandButton>                               
+                               
                             </b:column>
                         </b:row>
                     </h:form>

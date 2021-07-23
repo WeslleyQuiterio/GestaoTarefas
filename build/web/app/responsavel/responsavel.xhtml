@@ -12,30 +12,31 @@
             
             <ui:define name="content">
                 <b:container fluid="true">
-                    <b:link href="../tarefas.xhtml" value="Início "/>                    
+                    <b:link href="../responsavel/responsaveis.xhtml" value="Voltar "/>                    
                     <h:form>
                          <p:growl showDetail="true"  
                              showSummary="true" 
                              life="3000" 
                              sticky="true"/>
                         <b:row>
-                             <h3>Perfil de Acesso <b:label severity="info" value="Novo"/></h3>
+                            <h3>Responsável <b:label rendered="#{responsavelBean.responsavel.idResponsavel == null}" severity="info" value="Novo"/></h3>
                              <hr></hr>
                         </b:row>
                         <b:row>
                             <b:column span="12">
-                                <b:inputText label="Descrição"/>
+                                <b:inputText span="2" disabled="true" value="#{responsavelBean.responsavel.idResponsavel}" label="Código"/>
+                                <b:inputText span="6" label="Nome" value="#{responsavelBean.responsavel.nome}"/>
                             </b:column>                  
                         </b:row>
                         <b:row>
                             <b:column span="12">
-                                <b:commandButton span="2" look="success" value="Salvar" style="margin-top: 24px">
+                                <b:commandButton span="2" look="success" value="Salvar" action="#{responsavelBean.salvar()}" style="margin-top: 24px">
                                      
                                      <b:iconAwesome value="fa-save"/>
                                 </b:commandButton>
                                 
-                                <b:commandButton span="2" look="danger" value="Cancelar" style="margin-top: 24px">
-                                     <b:iconAwesome  value="fa-undo"/>
+                                <b:commandButton span="2" look="danger" immediate="true" action="/app/responsavel/responsaveis.xhtml?faces-redirect=true" value="Cancelar" style="margin-top: 24px">
+                                     <b:iconAwesome  value="fa-undo" />
                                 </b:commandButton>
                             </b:column>
                         </b:row>

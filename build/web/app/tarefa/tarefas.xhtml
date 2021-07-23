@@ -4,7 +4,8 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:b="http://bootsfaces.net/ui"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <body>
 
@@ -21,29 +22,71 @@
                             <h3>Listagem de Tarefas</h3>   
                             <hr></hr>
                         </b:row>
-                        <b:row>
-                            <b:commandButton tooltip="Adicionar nova tarefa">
-                                <b:icon value="plus"/>                           
-                            </b:commandButton>  
-                            <b:commandButton tooltip="Atualizar lista de tarefas" style="margin-left: 6px">
-                                <b:icon value="refresh"/>                           
-                            </b:commandButton>   
-                        </b:row>
-                        <b:row style="margin-top: 24px">
-                            <b:column span="12">
-                                <b:dataTable >
-                                    <b:dataTableColumn label="Ações" width="120px">
-                                        <b:commandButton tooltip="editar perfil" action="#">
-                                            <b:iconAwesome value="fa-edit"/>   
+                        <h:form>
+                            <b:row>
+                                <b:column>
+                                    <b:panel title="Filtros">
+                                        <b:inputText span="4" value="#{tarefaBean.filtro.numero}" label="Número" placeholder="123"/> 
+                                        <b:inputText span="8" value="#{tarefaBean.filtro.tituloDesc}" label="Título/Descrição" placeholder="Fazer comida"/>
+                                        <b:selectOneMenu  value="#{tarefaBean.filtro.responsavel}" span="4" label="Responsável">
+                                            <f:selectItem itemValue="#{null}" itemLabel="Selecione"/>
+                                            <f:selectItems value="#{tarefaBean.responsaveis}" var="resp" itemLabel="#{resp.nome}" itemValue="#{resp}"/>
+                                        </b:selectOneMenu>
+                                        <b:selectOneMenu value="#{tarefaBean.filtro.situacao}" span="4" label="Situação">
+                                            <f:selectItem itemValue="P" itemLabel="Pendente"/>
+                                            <f:selectItem itemValue="C" itemLabel="Concluido"/>
+                                        </b:selectOneMenu>
+                                        <b:commandButton value="Filtrar" look="primary" action="#{tarefaBean.filtrar()}" style="margin-top: 24px">
+                                            <b:icon value="filter"/> 
                                         </b:commandButton>
-                                        <b:commandButton tooltip="excluir perfil">
-                                            <b:iconAwesome value="fa-trash-o"/>   
-                                        </b:commandButton>
-                                    </b:dataTableColumn>
 
-                                </b:dataTable>
-                            </b:column>                  
-                        </b:row>
+
+                                    </b:panel>
+                                </b:column>
+                            </b:row>
+
+
+
+                            <b:row>
+                                <b:commandButton tooltip="Adicionar nova tarefa" action="#{tarefaBean.addOrEdit(null)}">
+                                    <b:icon value="plus"/>                           
+                                </b:commandButton>  
+                                <b:commandButton tooltip="Atualizar lista de tarefas" action="#{tarefaBean.refresh()}" style="margin-left: 6px">
+                                    <b:icon value="refresh"/>                           
+                                </b:commandButton>   
+                            </b:row>
+                            <b:row style="margin-top: 24px">
+                                <b:column span="12">
+                                    <b:dataTable value="#{tarefaBean.tarefas}" var="tarefa" responsive="true" style="width: 100%" >
+                                        <b:dataTableColumn value="#{tarefa.idTarefa}" label="Número" width="20px"/>
+                                        <b:dataTableColumn value="#{tarefa.titulo}" label="Titulo"/>
+                                        <b:dataTableColumn value="#{tarefa.responsavel.nome}" label="Responsável" width="170px"/>
+                                        <b:dataTableColumn label="Situação" width="20px">
+                                            <b:label value="Concluido" rendered="#{tarefa.concluido}" severity="success" />
+                                            <b:label value="Pendente" rendered="#{!tarefa.concluido}" severity="primary" />
+                                            
+                                        </b:dataTableColumn>
+                                        <b:dataTableColumn label="Prioridade" width="20px">
+                                            <b:label value="#{tarefa.strPrioridade}" severity="#{tarefa.lookPrioridade}" />
+                                        </b:dataTableColumn>
+                                        <b:dataTableColumn label="Ações" width="160px">
+                                            <b:commandButton tooltip="editar tarefa" action="#{tarefaBean.addOrEdit(tarefa)}" style="margin-right: 4px">
+                                                <b:iconAwesome value="fa-edit"/>   
+                                            </b:commandButton>
+                                            <b:commandButton tooltip="excluir tarefa" action="#{tarefaBean.excluir(tarefa)}" onclick="if (!confirm('Tem certeza que deseja excluir a tarefa #{tarefa.idTarefa}'))
+                                                    return false" style="margin-right: 4px">
+                                                <b:iconAwesome value="fa-trash-o"/>   
+                                            </b:commandButton>
+                                            <b:commandButton rendered="#{!tarefa.concluido}" action="#{tarefaBean.concluirTarefa(tarefa)}" tooltip="Concluir tarefa"  onclick="if (!confirm('Tem certeza que deseja concluir a tarefa #{tarefa.idTarefa}'))
+                                                    return false">
+                                                <b:iconAwesome value="check-square"/>   
+                                            </b:commandButton>
+                                        </b:dataTableColumn>
+
+                                    </b:dataTable>
+                                </b:column>                  
+                            </b:row>
+                        </h:form>
                     </h:form>
                 </b:container>
             </ui:define>

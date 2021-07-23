@@ -10,6 +10,7 @@ import br.com.gestaotarefas.dao.ResponsavelDAO;
 import br.com.gestaotarefas.model.Responsavel;
 import br.com.gestaotarefas.util.EntityManagerUtil;
 import br.com.lumi.exception.BaseException;
+import java.io.Serializable;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
@@ -18,7 +19,7 @@ import javax.persistence.EntityTransaction;
  *
  * @author Weslley
  */
-public class ResponsavelService {
+public class ResponsavelService implements Serializable{
 
     private IResponsavelDAO responsavelDAO = new ResponsavelDAO();
 
@@ -69,10 +70,13 @@ public class ResponsavelService {
             }
         }
     }
+    
+    
 
     public void excluir(Responsavel responsavel) throws BaseException {
         EntityManager em = null;
         EntityTransaction tx = null;
+        Responsavel respDel = null;
 
         try {
             em = EntityManagerUtil.getInstance().getEntityManager();
@@ -80,7 +84,8 @@ public class ResponsavelService {
             tx = em.getTransaction();
             tx.begin();
             if (responsavel.getIdResponsavel() != null && responsavel.getIdResponsavel() > 0) {
-                responsavelDAO.excluir(responsavel);
+                respDel = responsavelDAO.buscarPorId(responsavel.getIdResponsavel());
+                responsavelDAO.excluir(respDel);
             }
 
             responsavelDAO.flush();
