@@ -37,20 +37,33 @@ Como usar este projeto em ambiente local.
 
 2 - Criar as seguintes tabelas com o sql abaixo:
 
+<sql>
 CREATE SEQUENCE gestao_tarefas."responsavel_idResponsavel_seq"
     INCREMENT 1
     START 1
     MINVALUE 1
     MAXVALUE 9223372036854775807
     CACHE 1;
+</sql>
 
+
+
+
+<code>
   CREATE SEQUENCE gestao_tarefas.tarefa_idtarefa_seq
     INCREMENT 1
     START 1
     MINVALUE 1
     MAXVALUE 9223372036854775807
     CACHE 1;
-    
+</code>	
+
+
+
+
+
+	
+<code>    
 CREATE TABLE IF NOT EXISTS gestao_tarefas.responsavel
 (
     idresponsavel integer NOT NULL DEFAULT nextval('gestao_tarefas."responsavel_idResponsavel_seq"'::regclass),
@@ -61,6 +74,13 @@ WITH (
     OIDS = FALSE
 )
 TABLESPACE pg_default;
+</code>
+	
+  
+  
+  
+	
+<code>
 
 CREATE TABLE IF NOT EXISTS gestao_tarefas.tarefa
 (
@@ -82,5 +102,5 @@ WITH (
     OIDS = FALSE
 )
 TABLESPACE pg_default;
-    
+</code>    
     
